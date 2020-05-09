@@ -21,10 +21,10 @@ class EditUser extends Component {
     }
 
     onChangeHandler = (e) => {
-        this.setState ({
-            userData: {
-            ...this.state.userData,
-            [e.target.name]: e.target.value}
+        const { userData } = this.state;
+        userData[e.target.name] = e.target.value;
+        this.setState({
+            userData
         })
     }
 
@@ -32,7 +32,7 @@ class EditUser extends Component {
         const data = {
             userData: this.state.userData
         }
-        this.props && this.props.SignUpActionData(data)
+        this.props && this.props.editActionData(data)
     }
 
     render() {
@@ -68,7 +68,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-    SignUpActionData: (data) => dispatch(actionCreator.SignUpAction(data)),
+        editActionData: (data) => dispatch(actionCreator.EditAction(data)),
     };
 };
 

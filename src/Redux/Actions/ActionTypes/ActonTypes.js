@@ -9,3 +9,8 @@ export const REMOVE_SUCCESS = (data) => ({
   type: actionConstant.REMOVE_DATA_SUCCESS,
   data: data,
 });
+
+export const EDIT_SUCCESS = (data) => ({
+  type: actionConstant.EDIT_DATA_SUCCESS,
+  data: data,
+});

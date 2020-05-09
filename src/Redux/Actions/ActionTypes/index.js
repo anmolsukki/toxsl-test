@@ -1,1 +1,1 @@
-export { UserAction } from '../Action/UserAction';
+export { SignUpAction } from '../Action/UserAction';

@@ -1,16 +1,16 @@
 import { combineReducers } from "redux";
-import { UserReducer } from './Reducer/UserReducer';
+import { SignUpReducer } from './Reducer/UserReducer';
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist: ["CtrUser"]
+    whitelist: ["CtrSignUp"]
 }
 
 const rootReducer = combineReducers({
-    CtrUser: UserReducer,
+    CtrSignUp: SignUpReducer,
 });
 
 export default persistReducer(persistConfig, rootReducer);

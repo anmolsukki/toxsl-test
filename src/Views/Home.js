@@ -1,75 +1,69 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import * as actionCreator from '../Redux/Actions/ActionTypes/index';
 
 class Home extends React.Component {
-  state = {
-    userData: {}
-  }
 
-  onChangeHandler = (e) => {
-    const { userData } = this.state;
-    userData[e.target.name] = e.target.value;
-    this.setState({
-      userData
-    })
-  }
-
-  submitHandler = () => {
+  deleteHandler = (index) => {
     const data = {
-      userData: this.state.userData
+      userData: index
     }
-    this.props && this.props.userActionData(data)
+    this.props && this.props.SignUpActionData(data)
   }
 
   render() {
-    console.log("sdfsdfs", this.props.data)
+    if(this.props.signupStateData.reUserData.length === 0){
+      localStorage.clear()
+      window.location.reload()
+    }
+    const db = this.props.signupStateData.reUserData;
     return (
-      <div className="col-xl-5 col-lg-6 col-md-6 col-sm-8 mx-auto mt-5">
-        <div className="card">
-          <h5 className="card-header info-color white-text text-center py-4">
-            <strong>Sign in</strong>
-          </h5>
-          <div className="card-body px-lg-5 pt-0">
-            <form className="text-center" style={{color: "#757575"}} action="#!">
-              <div className="md-form">
-                <input type="email" id="materialLoginFormEmail" className="form-control" />
-                <label htmlFor="materialLoginFormEmail">E-mail</label>
-              </div>
-              <div className="md-form">
-                <input type="password" id="materialLoginFormPassword" className="form-control" />
-                <label htmlFor="materialLoginFormPassword">Password</label>
-              </div>
-              <div className="d-flex justify-content-end">
-                <div>
-                  <Link to="#">Forgot password?</Link>
-                </div>
-              </div>
-              <button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Sign in</button>
-              <p>Not a member?<Link to="#">Register</Link></p>
-            </form>
-          </div>
-        </div>
+      <div className="col-xl-10 col-lg-10 col-md-10 col-sm-12 mx-auto mt-5">
+        <table className="table">
+          <thead className="black white-text">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {db.map((data, index) => {
+              return (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{data.name}</td>
+                  <td>{data.email}</td>
+                  <td>
+                    <span className="badge badge-info" style={{cursor: "pointer"}}><Link to={{ pathname: `/users/edit/${data.id}`}}>Edit</Link></span>&nbsp;&nbsp;
+                    <span className="badge badge-danger" style={{cursor: "pointer"}} onClick={() => this.deleteHandler(data.id)}>Delete</span>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const userData = state.CtrUser
+  const ctrSignUpData = state.CtrSignUp
   return {
-    data: userData
+      signupStateData: ctrSignUpData
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    userActionData: (data) => dispatch(actionCreator.UserAction(data)),
-  };
+return {
+  SignUpActionData: (data) => dispatch(actionCreator.SignUpAction(data)),
+};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

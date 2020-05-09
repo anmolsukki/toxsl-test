@@ -30,15 +30,10 @@ class Login extends React.Component {
         const { email, password } = this.state;
         const db = this.props.signupStateData.reUserData;
         const user = db.find(el => el.email === email);
-        if(email === user.email && password === user.password){
-            localStorage.setItem("token", "fgdfhfgfhfgbvgfhfgh")
-            this.setState({
-                loggedIn: true
-            })
-        }
-        else {
-            alert("Enter Valid Email and Password")
-        }
+        if(!user)  return alert("Either invalid email or password");
+        if(password !== user.password) return alert("Either invalid email or password")
+        localStorage.setItem("token", "fgdfhfgfhfgbvgfhfgh")
+        this.setState({ loggedIn: true });
     }
 
     render() {
@@ -64,7 +59,10 @@ class Login extends React.Component {
                                     <Link to="#">Forgot password?</Link>
                                 </div>
                             </div>
-                            <button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" onClick={this.submitHandler}>Sign in</button>
+                            {this.state.email.length > 0 && this.state.password > 0 ?
+                            <button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" onClick={this.submitHandler}>Sign in</button> :
+                            <button className="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" disabled={true}>Sign in</button>
+                            }
                             <p>Not a member?&nbsp;<Link to="signup">Register</Link></p>
                         </div>
                     </div>
